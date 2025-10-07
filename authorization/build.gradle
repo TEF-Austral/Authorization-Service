@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '2.1.20'
+    id 'buildlogic.kotlin-common-conventions'
 }
 
 group = 'com.github.tef-austral'
@@ -13,9 +13,18 @@ dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 
+tasks.named('bootJar') {
+    enabled = true
+}
+
+tasks.named('jar') {
+    enabled = false
+}
+
 test {
     useJUnitPlatform()
 }
+
 kotlin {
     jvmToolchain(21)
 }

@@ -9,4 +9,3 @@ class AuthorizationServiceApplication
 fun main(args: Array<String>) {
     runApplication<AuthorizationServiceApplication>(*args)
 }
-
