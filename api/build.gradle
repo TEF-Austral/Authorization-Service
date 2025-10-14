@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 }
 
 tasks.named('bootJar') {
@@ -27,4 +28,8 @@ test {
 
 kotlin {
     jvmToolchain(21)
+}
+
+springBoot {
+    mainClass = 'api.ExampleServiceApplicationKt'
 }

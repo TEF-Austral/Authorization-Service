@@ -14,4 +14,4 @@ plugins {
 
 rootProject.name = 'authorization-service'
 
-include 'authorization'
+include 'api'
