@@ -2,18 +2,6 @@ spring:
   application:
     name: tef-austral-api
 
-  datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:echo_db}
-    driver-class-name: org.postgresql.Driver
-    username: ${DB_USER:sa}
-    password: ${DB_PASSWORD:password}
-
-  jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
-    show-sql: true
-    generate-ddl: true
-    hibernate:
-      ddl-auto: update
 
   security:
     oauth2:
