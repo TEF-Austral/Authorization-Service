@@ -3,7 +3,7 @@ package api
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["api", "auth"])
 class ExampleServiceApplication
 
 fun main(args: Array<String>) {
