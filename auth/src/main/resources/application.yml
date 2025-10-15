@@ -1,12 +1,12 @@
-auth0:
-  audience: ${AUTH0_AUDIENCE:https://tef-austral.com/api}
+  auth0:
+    audience: ${AUTH0_AUDIENCE:https://tef-austral.com/api}
 
-spring:
-  application:
-    name: tef-austral-auth-module
+  spring:
+    application:
+      name: tef-austral-auth-module
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${AUTH0_ISSUER_URI}
+    security:
+      oauth2:
+        resourceserver:
+          jwt:
+            issuer-uri: ${AUTH0_ISSUER_URI:https://tef-austral.us.auth0.com/}

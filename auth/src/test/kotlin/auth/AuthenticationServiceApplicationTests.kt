@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest
 )
 class AuthenticationServiceApplicationTests {
 
-        @Test
-        fun contextLoads() {
-        }
+    @Test
+    fun contextLoads() {
+    }
 }
