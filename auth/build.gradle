@@ -9,9 +9,6 @@ repositories {
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 }
 
 tasks.named('bootJar') {
@@ -31,5 +28,5 @@ kotlin {
 }
 
 springBoot {
-    mainClass = 'org.austral.ingsis.auth.AuthenticationServiceApplicationKt'
+    mainClass = 'auth.AuthenticationServiceApplicationKt'
 }
