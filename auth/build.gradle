@@ -1,5 +1,5 @@
 plugins {
-    id 'buildlogic.kotlin-common-conventions'
+    id 'buildlogic.kotlin-library-conventions'
 }
 
 repositories {
@@ -12,11 +12,11 @@ dependencies {
 }
 
 tasks.named('bootJar') {
-    enabled = true
+    enabled = false
 }
 
 tasks.named('jar') {
-    enabled = false
+    enabled = true
 }
 
 test {
