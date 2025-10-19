@@ -1,11 +1,11 @@
 services:
   api:
-    container_name: "base-api"
+    container_name: "authentication-service-api"
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: ghcr.io/tef-austral/base-api:latest
+    image: ghcr.io/tef-austral/authentication-api:latest
     ports:
-      - 8000:8080
+      - 8006:8080
     env_file:
       - .env

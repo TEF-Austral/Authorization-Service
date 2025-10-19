@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod.GET
 import org.springframework.http.HttpMethod.POST
+import org.springframework.http.HttpMethod.PATCH
+import org.springframework.http.HttpMethod.DELETE
 import org.springframework.security.config.Customizer.withDefaults
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -21,9 +23,7 @@ import org.springframework.security.web.SecurityFilterChain
 class OAuth2ResourceServerSecurityConfiguration(
     @Value("\${auth0.audience}")
     val audience: String,
-    @Value(
-        "\${spring.security.oauth2.resourceserver.jwt.issuer-uri}",
-    )
+    @Value("\${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     val issuer: String,
 ) {
     @Bean
@@ -39,6 +39,14 @@ class OAuth2ResourceServerSecurityConfiguration(
                     .hasAuthority("SCOPE_read:snippets")
                     .requestMatchers(POST, "/snippets")
                     .hasAuthority("SCOPE_write:snippets")
+                    .requestMatchers(GET, "/users", "/users/*")
+                    .hasAuthority("SCOPE_read:users")
+                    .requestMatchers(POST, "/users")
+                    .hasAuthority("SCOPE_write:users")
+                    .requestMatchers(PATCH, "/users/*")
+                    .hasAuthority("SCOPE_write:users")
+                    .requestMatchers(DELETE, "/users/*")
+                    .hasAuthority("SCOPE_delete:users")
                     .anyRequest()
                     .authenticated()
             }.oauth2ResourceServer { it.jwt(withDefaults()) }

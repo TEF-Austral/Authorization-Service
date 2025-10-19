@@ -9,6 +9,7 @@ repositories {
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation("com.fasterxml.jackson.core:jackson-databind")
 }
 
 tasks.named('bootJar') {
@@ -29,4 +30,6 @@ kotlin {
 
 springBoot {
     mainClass = 'auth.AuthenticationServiceApplicationKt'
+}
+compileKotlin {
 }
