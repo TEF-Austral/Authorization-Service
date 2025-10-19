@@ -3,7 +3,7 @@ services:
     container_name: "base-api"
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: ghcr.io/tef-austral/base-api:latest
     ports:
       - 8000:8080
