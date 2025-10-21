@@ -4,8 +4,7 @@ set -euo pipefail
 
 # Resolve project root and load .env
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
-ROOT_DIR="$(cd -- "${SCRIPT_DIR}/.." >/dev/null 2>&1 && pwd)"
-ENV_FILE="${ROOT_DIR}/.env"
+ENV_FILE="${SCRIPT_DIR}/.env"
 
 if [[ -f "${ENV_FILE}" ]]; then
   # Export all variables defined in .env
