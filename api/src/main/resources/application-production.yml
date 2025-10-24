@@ -17,14 +17,18 @@ spring:
         jwt:
           issuer-uri: ${AUTH0_ISSUER_URI}
 
-  auth0:
-    audience: ${AUTH0_AUDIENCE}
-
+auth0:
+  audience: ${AUTH0_AUDIENCE}
+  domain: ${AUTH0_DOMAIN}
   management:
-    endpoints:
-      web:
-        exposure:
-          include: health
-    endpoint:
-      health:
-        show-details: always
+    client-id: ${AUTH0_MGMT_CLIENT_ID}
+    client-secret: ${AUTH0_MGMT_CLIENT_SECRET}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always

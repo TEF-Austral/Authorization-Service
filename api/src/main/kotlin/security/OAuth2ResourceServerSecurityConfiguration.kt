@@ -1,4 +1,4 @@
-package api.security
+package security
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -27,16 +27,11 @@ class OAuth2ResourceServerSecurityConfiguration(
         http
             .authorizeHttpRequests {
                 it
-                    // 1. Rutas públicas
-                    .requestMatchers("/")
+                    .requestMatchers("/", "/actuator/health")
                     .permitAll()
-                    // 2. Para TODAS las demás rutas (solo /snippets en este servicio)
-                    //    solo exigimos AUTENTICACIÓN. La lógica ABAC irá en el controlador.
-                    .requestMatchers("/snippets/**")
-                    .authenticated()
                     .anyRequest()
                     .authenticated()
-            }.oauth2ResourceServer { it.jwt(withDefaults()) } // Valida el token
+            }.oauth2ResourceServer { it.jwt(withDefaults()) }
             .cors { it.disable() }
             .csrf { it.disable() }
 
