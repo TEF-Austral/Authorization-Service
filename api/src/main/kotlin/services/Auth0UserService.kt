@@ -17,8 +17,8 @@ class Auth0UserService(
     @Value("\${auth0.domain}") private val domain: String,
     @Value("\${auth0.management.client-id}") private val clientId: String,
     @Value("\${auth0.management.client-secret}") private val clientSecret: String,
-) {
-    fun createUser(request: CreateUserRequestDTO): UserResponseDTO {
+) : UserService {
+    override fun createUser(request: CreateUserRequestDTO): UserResponseDTO {
         val token = getManagementToken()
 
         val headers =
@@ -52,7 +52,7 @@ class Auth0UserService(
         )
     }
 
-    fun deleteUser(userId: String) {
+    override fun deleteUser(userId: String) {
         val token = getManagementToken()
 
         val headers =

@@ -1,17 +1,16 @@
-package services
+package services.services
 
 import dtos.CheckPermissionRequestDTO
 import dtos.GrantPermissionRequestDTO
 import entities.Permission
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.assertThrows
 import repositories.MockPermissionRepository
+import services.AuthorizationService
 
 class AuthorizationServiceTest {
 
@@ -36,7 +35,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -51,7 +50,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -66,7 +65,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertFalse(result)
+        Assertions.assertFalse(result)
     }
 
     @Test
@@ -90,7 +89,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -105,7 +104,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -120,7 +119,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertFalse(result)
+        Assertions.assertFalse(result)
     }
 
     @Test
@@ -144,7 +143,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -168,7 +167,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertFalse(result)
+        Assertions.assertFalse(result)
     }
 
     @Test
@@ -189,8 +188,8 @@ class AuthorizationServiceTest {
                 ownerId = "owner1",
             )
 
-        assertTrue(service.checkPermission(ownerRequest))
-        assertFalse(service.checkPermission(userRequest))
+        Assertions.assertTrue(service.checkPermission(ownerRequest))
+        Assertions.assertFalse(service.checkPermission(userRequest))
     }
 
     @Test
@@ -211,8 +210,8 @@ class AuthorizationServiceTest {
                 ownerId = "owner1",
             )
 
-        assertTrue(service.checkPermission(ownerRequest))
-        assertFalse(service.checkPermission(userRequest))
+        Assertions.assertTrue(service.checkPermission(ownerRequest))
+        Assertions.assertFalse(service.checkPermission(userRequest))
     }
 
     @Test
@@ -227,7 +226,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -251,7 +250,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -266,7 +265,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertFalse(result)
+        Assertions.assertFalse(result)
     }
 
     @Test
@@ -284,10 +283,10 @@ class AuthorizationServiceTest {
         val result = service.grantPermission(request)
 
         assertNotNull(result.id)
-        assertEquals("user1", result.userId)
-        assertEquals("snippet1", result.snippetId)
-        assertTrue(result.canRead)
-        assertFalse(result.canEdit)
+        Assertions.assertEquals("user1", result.userId)
+        Assertions.assertEquals("snippet1", result.snippetId)
+        Assertions.assertTrue(result.canRead)
+        Assertions.assertFalse(result.canEdit)
     }
 
     @Test
@@ -313,8 +312,8 @@ class AuthorizationServiceTest {
 
         val result = service.grantPermission(request)
 
-        assertTrue(result.canRead)
-        assertTrue(result.canEdit)
+        Assertions.assertTrue(result.canRead)
+        Assertions.assertTrue(result.canEdit)
     }
 
     @Test
@@ -334,7 +333,7 @@ class AuthorizationServiceTest {
                 service.grantPermission(request)
             }
 
-        assertEquals("Only the owner can grant permissions", exception.message)
+        Assertions.assertEquals("Only the owner can grant permissions", exception.message)
     }
 
     @Test
@@ -354,7 +353,7 @@ class AuthorizationServiceTest {
                 service.grantPermission(request)
             }
 
-        assertEquals("Cannot grant permissions to the owner", exception.message)
+        Assertions.assertEquals("Cannot grant permissions to the owner", exception.message)
     }
 
     @Test
@@ -381,7 +380,7 @@ class AuthorizationServiceTest {
                 service.revokePermission("user1", "snippet1", "owner1")
             }
 
-        assertEquals("Permission not found", exception.message)
+        Assertions.assertEquals("Permission not found", exception.message)
     }
 
     @Test
@@ -413,10 +412,10 @@ class AuthorizationServiceTest {
 
         val permissions = service.getSnippetPermissions("snippet1", "owner1")
 
-        assertEquals(2, permissions.size)
-        assertTrue(permissions.any { it.userId == "user1" })
-        assertTrue(permissions.any { it.userId == "user2" })
-        assertFalse(permissions.any { it.userId == "user3" })
+        Assertions.assertEquals(2, permissions.size)
+        Assertions.assertTrue(permissions.any { it.userId == "user1" })
+        Assertions.assertTrue(permissions.any { it.userId == "user2" })
+        Assertions.assertFalse(permissions.any { it.userId == "user3" })
     }
 
     @Test
@@ -448,10 +447,10 @@ class AuthorizationServiceTest {
 
         val permissions = service.getUserPermissions("user1")
 
-        assertEquals(2, permissions.size)
-        assertTrue(permissions.any { it.snippetId == "snippet1" })
-        assertTrue(permissions.any { it.snippetId == "snippet2" })
-        assertFalse(permissions.any { it.snippetId == "snippet3" })
+        Assertions.assertEquals(2, permissions.size)
+        Assertions.assertTrue(permissions.any { it.snippetId == "snippet1" })
+        Assertions.assertTrue(permissions.any { it.snippetId == "snippet2" })
+        Assertions.assertFalse(permissions.any { it.snippetId == "snippet3" })
     }
 
     @Test
@@ -466,7 +465,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -490,7 +489,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -514,7 +513,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -538,7 +537,7 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 
     @Test
@@ -553,6 +552,6 @@ class AuthorizationServiceTest {
 
         val result = service.checkPermission(request)
 
-        assertTrue(result)
+        Assertions.assertTrue(result)
     }
 }

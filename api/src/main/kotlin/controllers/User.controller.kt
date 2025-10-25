@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import services.Auth0UserService
+import services.UserService
 
 @RestController
 @RequestMapping("/users")
 class UserController(
-    private val auth0UserService: Auth0UserService,
+    private val userService: UserService,
 ) {
     @PostMapping
     fun createUser(
         @RequestBody request: CreateUserRequestDTO,
     ): ResponseEntity<UserResponseDTO> {
-        val user = auth0UserService.createUser(request)
+        val user = userService.createUser(request)
         return ResponseEntity.ok(user)
     }
 
@@ -28,7 +28,7 @@ class UserController(
     fun deleteUser(
         @PathVariable userId: String,
     ): ResponseEntity<Void> {
-        auth0UserService.deleteUser(userId)
+        userService.deleteUser(userId)
         return ResponseEntity.noContent().build()
     }
 }
