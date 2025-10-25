@@ -9,8 +9,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import kotlin.collections.get
 
 @Service
@@ -62,12 +60,11 @@ class Auth0UserService(
                 setBearerAuth(token)
             }
 
-        // URL encode the userId to handle special characters like | in auth0|xxx
-        val encodedUserId = URLEncoder.encode(userId, StandardCharsets.UTF_8.toString())
-
         val entity = HttpEntity<Void>(headers)
+
+        // Spring RestTemplate automatically encodes the URL, so no manual encoding needed
         restTemplate.exchange(
-            "https://$domain/api/v2/users/$encodedUserId",
+            "https://$domain/api/v2/users/$userId",
             HttpMethod.DELETE,
             entity,
             Void::class.java,
