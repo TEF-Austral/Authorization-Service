@@ -76,7 +76,6 @@ class AuthorizationServiceEdgeCasesTest {
                 ownerId = "owner1",
             )
 
-        // Execute requires read permission, not edit
         assertFalse(service.checkPermission(request))
     }
 
