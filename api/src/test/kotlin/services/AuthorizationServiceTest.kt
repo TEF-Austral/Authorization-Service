@@ -1,4 +1,4 @@
-package services.services
+package services
 
 import dtos.CheckPermissionRequestDTO
 import dtos.GrantPermissionRequestDTO
@@ -10,7 +10,6 @@ import org.junit.jupiter.api.assertNotNull
 import org.junit.jupiter.api.assertNull
 import org.junit.jupiter.api.assertThrows
 import repositories.MockPermissionRepository
-import services.AuthorizationService
 
 class AuthorizationServiceTest {
 

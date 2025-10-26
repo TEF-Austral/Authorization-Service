@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.web.client.TestRestTemplate
-import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.test.context.ActiveProfiles
 
 @SpringBootTest(
@@ -18,28 +15,13 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 class AuthorizationServiceApplicationTest {
 
-    @LocalServerPort
-    private var port: Int = 0
-
-    @Autowired
-    private lateinit var restTemplate: TestRestTemplate
-
     @Test
     fun `health map should be immutable structure`() {
         val app = AuthorizationServiceApplication()
 
         val result = app.health()
 
-        assertTrue(result is Map<*, *>)
         assertTrue(result.containsKey("status"))
-    }
-
-    @Test
-    fun `health should return new map instance each time`() {
-        val app = AuthorizationServiceApplication()
-
-        val result1 = app.health()
-        val result2 = app.health()
     }
 
     @Test

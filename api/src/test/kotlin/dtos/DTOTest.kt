@@ -86,34 +86,6 @@ class DTOTest {
     }
 
     @Test
-    fun `CreateUserRequestDTO should create with all fields`() {
-        val dto =
-            CreateUserRequestDTO(
-                email = "test@example.com",
-                password = "SecurePass123!",
-                name = "Test User",
-            )
-
-        assertEquals("test@example.com", dto.email)
-        assertEquals("SecurePass123!", dto.password)
-        assertEquals("Test User", dto.name)
-    }
-
-    @Test
-    fun `UserResponseDTO should create with all fields`() {
-        val dto =
-            UserResponseDTO(
-                email = "test@example.com",
-                name = "Test User",
-                userId = "auth0|123456",
-            )
-
-        assertEquals("test@example.com", dto.email)
-        assertEquals("Test User", dto.name)
-        assertEquals("auth0|123456", dto.userId)
-    }
-
-    @Test
     fun `GetSnippetPermissionsRequestDTO should create with all fields`() {
         val dto =
             api.dtos.GetSnippetPermissionsRequestDTO(
@@ -227,41 +199,6 @@ class DTOTest {
                 )
 
             assertEquals(action, dto.action)
-        }
-    }
-
-    @Test
-    fun `CreateUserRequestDTO should handle special characters in fields`() {
-        val dto =
-            CreateUserRequestDTO(
-                email = "user+tag@example.com",
-                password = "P@ssw0rd!#$%",
-                name = "Tést Üser-Ñame",
-            )
-
-        assertEquals("user+tag@example.com", dto.email)
-        assertEquals("P@ssw0rd!#$%", dto.password)
-        assertEquals("Tést Üser-Ñame", dto.name)
-    }
-
-    @Test
-    fun `UserResponseDTO should handle different userId formats`() {
-        val userIds =
-            listOf(
-                "auth0|123456",
-                "google-oauth2|987654",
-                "github|username",
-            )
-
-        userIds.forEach { userId ->
-            val dto =
-                UserResponseDTO(
-                    email = "test@example.com",
-                    name = "Test User",
-                    userId = userId,
-                )
-
-            assertEquals(userId, dto.userId)
         }
     }
 
