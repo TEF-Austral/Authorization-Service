@@ -246,7 +246,6 @@ class UserServiceTest {
                     name = "Verified User",
                     picture = null,
                     nickname = "verified",
-                    emailVerified = true,
                 ),
             )
         whenever(auth0ClientService.getUsers(query = "email_verified:true")).thenReturn(auth0Users)
@@ -293,7 +292,6 @@ class UserServiceTest {
                     name = "John Doe",
                     picture = null,
                     nickname = "john",
-                    emailVerified = true,
                 ),
             )
         val expectedQuery = "name:*John* AND email:\"john@example.com\" AND email_verified:true"
@@ -303,7 +301,6 @@ class UserServiceTest {
             userService.searchUsers(
                 name = "John",
                 email = "john@example.com",
-                emailVerified = true,
             )
 
         assertNotNull(result)
@@ -322,7 +319,6 @@ class UserServiceTest {
                     name = "John Doe",
                     picture = null,
                     nickname = "john",
-                    emailVerified = true,
                 ),
             )
         val expectedQuery =
@@ -334,8 +330,6 @@ class UserServiceTest {
             userService.searchUsers(
                 name = "John",
                 email = "john@example.com",
-                emailVerified = true,
-                connection = "google-oauth2",
             )
 
         assertNotNull(result)
@@ -451,7 +445,6 @@ class UserServiceTest {
                     name = "Unverified User",
                     picture = null,
                     nickname = "unverified",
-                    emailVerified = false,
                 ),
             )
         whenever(auth0ClientService.getUsers(query = "email_verified:false")).thenReturn(auth0Users)

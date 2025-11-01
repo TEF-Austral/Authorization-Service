@@ -100,6 +100,21 @@ class AuthorizationService(
             toDTO(it)
         }
 
+    fun getSnippetsByPermission(
+        userId: String,
+        permission: String,
+    ): List<String> {
+        val userPermissions = permissionRepository.findAllByUserId(userId)
+
+        return when (permission.lowercase()) {
+            "read" -> userPermissions.filter { it.canRead }.map { it.snippetId }
+            "edit" -> userPermissions.filter { it.canEdit }.map { it.snippetId }
+            else -> throw IllegalArgumentException(
+                "Invalid permission type. Must be 'read' or 'edit'",
+            )
+        }
+    }
+
     private fun hasExplicitPermission(
         userId: String,
         snippetId: String,

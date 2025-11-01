@@ -46,7 +46,7 @@ class Auth0ClientService(
                 ?: throw RuntimeException("Failed to obtain Auth0 Management API token")
 
         cachedToken = response.accessToken
-        tokenExpirationTime = currentTime + response.expiresIn - 60 // 60 seconds buffer
+        tokenExpirationTime = currentTime + response.expiresIn - 60
 
         return cachedToken!!
     }
