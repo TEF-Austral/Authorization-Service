@@ -397,4 +397,87 @@ class UserServiceTest {
         assertEquals(1, result.size)
         verify(auth0ClientService).getUsers(query = "email_verified:false")
     }
+
+    @Test
+    fun `searchUsers with multiple criteria should combine with AND`() {
+        val auth0Users =
+            listOf(
+                Auth0UserResponseDTO(
+                    userId = "auth0|user1",
+                    email = "john@example.com",
+                    username = "johndoe",
+                    name = "John Doe",
+                    picture = null,
+                    nickname = "john",
+                ),
+            )
+        whenever(
+            auth0ClientService.getUsers(query = "name:*John* AND email:\"john@example.com\""),
+        ).thenReturn(auth0Users)
+
+        val result = userService.searchUsers(name = "John", email = "john@example.com")
+
+        assertNotNull(result)
+        assertEquals(1, result.size)
+        assertEquals("John Doe", result[0].name)
+        verify(auth0ClientService).getUsers(query = "name:*John* AND email:\"john@example.com\"")
+    }
+
+    @Test
+    fun `searchUsers with name and emailVerified should combine with AND`() {
+        val auth0Users =
+            listOf(
+                Auth0UserResponseDTO(
+                    userId = "auth0|user1",
+                    email = "verified@example.com",
+                    username = "verifieduser",
+                    name = "Verified User",
+                    picture = null,
+                    nickname = "verified",
+                ),
+            )
+        whenever(
+            auth0ClientService.getUsers(query = "name:*Verified* AND email_verified:true"),
+        ).thenReturn(auth0Users)
+
+        val result = userService.searchUsers(name = "Verified", emailVerified = true)
+
+        assertNotNull(result)
+        assertEquals(1, result.size)
+        verify(auth0ClientService).getUsers(query = "name:*Verified* AND email_verified:true")
+    }
+
+    @Test
+    fun `searchUsers with all criteria should combine with AND`() {
+        val auth0Users =
+            listOf(
+                Auth0UserResponseDTO(
+                    userId = "auth0|user1",
+                    email = "test@example.com",
+                    username = "testuser",
+                    name = "Test User",
+                    picture = null,
+                    nickname = "test",
+                ),
+            )
+        whenever(
+            auth0ClientService.getUsers(
+                query = "name:*Test* AND email:\"test@example.com\" AND email_verified:true AND identities.connection:\"auth0\"",
+            ),
+        ).thenReturn(auth0Users)
+
+        val result =
+            userService.searchUsers(
+                name = "Test",
+                email = "test@example.com",
+                emailVerified = true,
+                connection = "auth0",
+            )
+
+        assertNotNull(result)
+        assertEquals(1, result.size)
+        verify(auth0ClientService).getUsers(
+            query = "name:*Test* AND email:\"test@example.com\" AND email_verified:true AND identities.connection:\"auth0\"",
+        )
+    }
 }
