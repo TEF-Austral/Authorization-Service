@@ -462,7 +462,9 @@ class UserServiceTest {
             )
         whenever(
             auth0ClientService.getUsers(
-                query = "name:*Test* AND email:\"test@example.com\" AND email_verified:true AND identities.connection:\"auth0\"",
+                query =
+                    "name:*Test* AND email:\"test@example.com\" AND email_verified:true " +
+                        "AND identities.connection:\"auth0\"",
             ),
         ).thenReturn(auth0Users)
 
@@ -477,7 +479,9 @@ class UserServiceTest {
         assertNotNull(result)
         assertEquals(1, result.size)
         verify(auth0ClientService).getUsers(
-            query = "name:*Test* AND email:\"test@example.com\" AND email_verified:true AND identities.connection:\"auth0\"",
+            query =
+                "name:*Test* AND email:\"test@example.com\" " +
+                    "AND email_verified:true AND identities.connection:\"auth0\"",
         )
     }
 }
