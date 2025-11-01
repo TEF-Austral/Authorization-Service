@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.dev
     image: ghcr.io/tef-austral/authorization-api:dev
     ports:
-      - 8005:8080
+      - "8005:8080"
     env_file:
       - .env
     depends_on:
@@ -16,11 +16,13 @@ services:
     container_name: authorization_db
     image: postgres:16
     ports:
-      - 5437:5432
-    env_file:
-      - .env
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-volumes:  
+volumes:
   pgdata:
