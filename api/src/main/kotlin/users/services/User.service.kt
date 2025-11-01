@@ -67,8 +67,5 @@ class UserService(
             email = auth0User.email,
             name = auth0User.name,
             picture = auth0User.picture,
-            emailVerified = auth0User.emailVerified,
-            createdAt = auth0User.createdAt,
-            lastLogin = auth0User.lastLogin,
         )
 }

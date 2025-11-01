@@ -6,7 +6,4 @@ data class User(
     val email: String?,
     val name: String?,
     val picture: String?,
-    val emailVerified: Boolean?,
-    val createdAt: String?,
-    val lastLogin: String?,
 )
