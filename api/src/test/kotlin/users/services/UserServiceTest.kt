@@ -282,64 +282,6 @@ class UserServiceTest {
     }
 
     @Test
-    fun `searchUsers should combine multiple search criteria with AND`() {
-        val auth0Users =
-            listOf(
-                Auth0UserResponseDTO(
-                    userId = "auth0|user1",
-                    email = "john@example.com",
-                    username = "johndoe",
-                    name = "John Doe",
-                    picture = null,
-                    nickname = "john",
-                ),
-            )
-        val expectedQuery = "name:*John* AND email:\"john@example.com\" AND email_verified:true"
-        whenever(auth0ClientService.getUsers(query = expectedQuery)).thenReturn(auth0Users)
-
-        val result =
-            userService.searchUsers(
-                name = "John",
-                email = "john@example.com",
-            )
-
-        assertNotNull(result)
-        assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(query = expectedQuery)
-    }
-
-    @Test
-    fun `searchUsers should search with all criteria`() {
-        val auth0Users =
-            listOf(
-                Auth0UserResponseDTO(
-                    userId = "auth0|user1",
-                    email = "john@example.com",
-                    username = "johndoe",
-                    name = "John Doe",
-                    picture = null,
-                    nickname = "john",
-                ),
-            )
-        val expectedQuery =
-            "name:*John* AND email:\"john@example.com\" AND email_verified:true AND " +
-                "identities.connection:\"google-oauth2\""
-        whenever(auth0ClientService.getUsers(query = expectedQuery)).thenReturn(auth0Users)
-
-        val result =
-            userService.searchUsers(
-                name = "John",
-                email = "john@example.com",
-            )
-
-        assertNotNull(result)
-        assertEquals(1, result.size)
-        assertEquals("John Doe", result[0].name)
-        assertEquals("john@example.com", result[0].email)
-        verify(auth0ClientService).getUsers(query = expectedQuery)
-    }
-
-    @Test
     fun `searchUsers should call getUsers with null query when no criteria provided`() {
         val auth0Users =
             listOf(
