@@ -22,7 +22,7 @@ echo ""
 
 # Test 2: Search by email
 echo "2. Searching users by email query..."
-EMAIL="example@test.com"
+EMAIL="tomasmonteiro007@gmail.com"
 curl -X GET \
   "${BASE_URL}/api/users?query=email:\"${EMAIL}\"" \
   -H "Authorization: Bearer ${TOKEN}" \
@@ -34,7 +34,7 @@ echo ""
 # Test 3: Search by name
 echo "3. Searching users by name (contains 'john')..."
 curl -X GET \
-  "${BASE_URL}/api/users?query=name:*john*" \
+  "${BASE_URL}/api/users?query=name:*tomas*" \
   -H "Authorization: Bearer ${TOKEN}" \
   -H "Content-Type: application/json"
 echo ""
@@ -63,7 +63,7 @@ echo ""
 
 # Test 6: Get specific user by ID (replace with actual user ID)
 echo "6. Getting user by ID..."
-USER_ID="auth0|123456789"  # Replace with actual user ID
+USER_ID="auth0|6900dfc832f9acd376621a8"  # Replace with actual user ID
 curl -X GET \
   "${BASE_URL}/api/users/${USER_ID}" \
   -H "Authorization: Bearer ${TOKEN}" \
