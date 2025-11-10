@@ -1,5 +1,6 @@
 package security
 
+import api.config.RestTemplateConfig
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test

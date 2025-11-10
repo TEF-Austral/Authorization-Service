@@ -16,6 +16,7 @@ dependencies {
     testImplementation 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
+    implementation("com.newrelic.agent.java:newrelic-api:8.11.0")
 }
 
 tasks.named('bootJar') {
