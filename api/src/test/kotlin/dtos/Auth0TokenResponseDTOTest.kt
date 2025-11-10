@@ -1,6 +1,6 @@
-package users.dtos
+package dtos
 
-import api.users.dtos.Auth0TokenResponseDTO
+import api.dtos.responses.Auth0TokenResponseDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test

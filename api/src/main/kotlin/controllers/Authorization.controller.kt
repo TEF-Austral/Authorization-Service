@@ -1,11 +1,12 @@
-package controllers
+package api.controllers
 
-import api.dtos.GetSnippetPermissionsRequestDTO
-import dtos.CheckPermissionRequestDTO
-import dtos.CheckPermissionResponseDTO
-import dtos.GrantPermissionRequestDTO
-import dtos.RevokePermissionRequestDTO
-import dtos.PermissionResponseDTO
+import api.dtos.requests.GetSnippetPermissionsRequestDTO
+import api.dtos.requests.CheckPermissionRequestDTO
+import api.dtos.responses.CheckPermissionResponseDTO
+import api.dtos.requests.GrantPermissionRequestDTO
+import api.dtos.requests.RevokePermissionRequestDTO
+import api.dtos.responses.PermissionResponseDTO
+import api.services.AuthorizationService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import services.AuthorizationService
 
 @RestController
 @RequestMapping("/api/authorization")

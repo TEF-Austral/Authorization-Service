@@ -1,4 +1,4 @@
-package api.dtos
+package api.dtos.requests
 
 data class GetSnippetPermissionsRequestDTO(
     val requesterId: String,

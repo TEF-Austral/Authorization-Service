@@ -1,5 +1,11 @@
 package dtos
 
+import api.dtos.requests.CheckPermissionRequestDTO
+import api.dtos.requests.GetSnippetPermissionsRequestDTO
+import api.dtos.requests.GrantPermissionRequestDTO
+import api.dtos.requests.RevokePermissionRequestDTO
+import api.dtos.responses.CheckPermissionResponseDTO
+import api.dtos.responses.PermissionResponseDTO
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -88,7 +94,7 @@ class DTOTest {
     @Test
     fun `GetSnippetPermissionsRequestDTO should create with all fields`() {
         val dto =
-            api.dtos.GetSnippetPermissionsRequestDTO(
+            GetSnippetPermissionsRequestDTO(
                 snippetId = "snippet1",
                 requesterId = "requester1",
             )

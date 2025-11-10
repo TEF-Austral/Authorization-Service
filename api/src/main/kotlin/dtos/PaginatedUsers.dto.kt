@@ -1,4 +1,4 @@
-package api.users.dtos
+package api.dtos
 
 import api.users.models.User
 

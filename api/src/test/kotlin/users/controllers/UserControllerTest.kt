@@ -1,7 +1,7 @@
 package users.controllers
 
 import api.users.controllers.UserController
-import api.users.dtos.PaginatedUsersDTO
+import api.dtos.PaginatedUsersDTO
 import api.users.models.User
 import api.users.services.UserService
 import org.junit.jupiter.api.Assertions.assertEquals

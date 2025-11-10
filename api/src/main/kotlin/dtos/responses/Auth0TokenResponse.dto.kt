@@ -1,4 +1,4 @@
-package api.users.dtos
+package api.dtos.responses
 
 import com.fasterxml.jackson.annotation.JsonProperty
 

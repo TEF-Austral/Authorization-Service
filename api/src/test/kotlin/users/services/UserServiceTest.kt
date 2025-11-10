@@ -1,7 +1,9 @@
 package users.services
 
-import api.users.dtos.Auth0UserResponseDTO
-import api.users.services.Auth0ClientService
+import api.auth0.Auth0UserRepository
+import api.dtos.responses.Auth0UserResponseDTO
+import api.users.services.UserMapper
+import api.users.services.UserQueryBuilder
 import api.users.services.UserService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -12,13 +14,17 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class UserServiceTest {
-    private lateinit var auth0ClientService: Auth0ClientService
+    private lateinit var auth0UserRepository: Auth0UserRepository
+    private lateinit var userMapper: UserMapper
+    private lateinit var queryBuilder: UserQueryBuilder
     private lateinit var userService: UserService
 
     @BeforeEach
     fun setUp() {
-        auth0ClientService = mock()
-        userService = UserService(auth0ClientService)
+        auth0UserRepository = mock()
+        userMapper = UserMapper()
+        queryBuilder = UserQueryBuilder()
+        userService = UserService(auth0UserRepository, userMapper, queryBuilder)
     }
 
     @Test
@@ -42,7 +48,7 @@ class UserServiceTest {
                     nickname = "user2nick",
                 ),
             )
-        whenever(auth0ClientService.getUsers(null, 0, 50)).thenReturn(auth0Users)
+        whenever(auth0UserRepository.getUsers(null, 0, 50, "v3")).thenReturn(auth0Users)
 
         val result = userService.getUsers()
 
@@ -54,7 +60,7 @@ class UserServiceTest {
         assertEquals("auth0|user1", result.users[0].id)
         assertEquals("user1", result.users[0].username)
         assertEquals("user1@example.com", result.users[0].email)
-        verify(auth0ClientService).getUsers(null, 0, 50)
+        verify(auth0UserRepository).getUsers(null, 0, 50, "v3")
     }
 
     @Test
@@ -70,7 +76,7 @@ class UserServiceTest {
                     nickname = "user1nick",
                 ),
             )
-        whenever(auth0ClientService.getUsers("name:*test*", 1, 10)).thenReturn(auth0Users)
+        whenever(auth0UserRepository.getUsers("name:*test*", 1, 10, "v3")).thenReturn(auth0Users)
 
         val result = userService.getUsers(query = "name:*test*", page = 1, pageSize = 10)
 
@@ -79,12 +85,12 @@ class UserServiceTest {
         assertEquals(1, result.page)
         assertEquals(10, result.pageSize)
         assertEquals(1, result.total)
-        verify(auth0ClientService).getUsers("name:*test*", 1, 10)
+        verify(auth0UserRepository).getUsers("name:*test*", 1, 10, "v3")
     }
 
     @Test
     fun `getUsers should return empty list when no users found`() {
-        whenever(auth0ClientService.getUsers(null, 0, 50)).thenReturn(emptyList())
+        whenever(auth0UserRepository.getUsers(null, 0, 50, "v3")).thenReturn(emptyList())
 
         val result = userService.getUsers()
 
@@ -107,7 +113,7 @@ class UserServiceTest {
                 picture = "https://example.com/pic.jpg",
                 nickname = "testnick",
             )
-        whenever(auth0ClientService.getUserById(userId)).thenReturn(auth0User)
+        whenever(auth0UserRepository.getUserById(userId)).thenReturn(auth0User)
 
         val result = userService.getUserById(userId)
 
@@ -117,7 +123,7 @@ class UserServiceTest {
         assertEquals("test@example.com", result.email)
         assertEquals("Test User", result.name)
         assertEquals("https://example.com/pic.jpg", result.picture)
-        verify(auth0ClientService).getUserById(userId)
+        verify(auth0UserRepository).getUserById(userId)
     }
 
     @Test
@@ -132,13 +138,13 @@ class UserServiceTest {
                 picture = "https://example.com/pic.jpg",
                 nickname = "testnick",
             )
-        whenever(auth0ClientService.getUserById(userId)).thenReturn(auth0User)
+        whenever(auth0UserRepository.getUserById(userId)).thenReturn(auth0User)
 
         val result = userService.getUserById(userId)
 
         assertNotNull(result)
         assertEquals("testnick", result.username)
-        verify(auth0ClientService).getUserById(userId)
+        verify(auth0UserRepository).getUserById(userId)
     }
 
     @Test
@@ -163,7 +169,7 @@ class UserServiceTest {
                     nickname = "nick2",
                 ),
             )
-        whenever(auth0ClientService.getUsersByEmail(email)).thenReturn(auth0Users)
+        whenever(auth0UserRepository.getUsersByEmail(email)).thenReturn(auth0Users)
 
         val result = userService.getUsersByEmail(email)
 
@@ -172,19 +178,19 @@ class UserServiceTest {
         assertEquals("auth0|user1", result[0].id)
         assertEquals("auth0|user2", result[1].id)
         assertEquals(email, result[0].email)
-        verify(auth0ClientService).getUsersByEmail(email)
+        verify(auth0UserRepository).getUsersByEmail(email)
     }
 
     @Test
     fun `getUsersByEmail should return empty list when no users found`() {
         val email = "nonexistent@example.com"
-        whenever(auth0ClientService.getUsersByEmail(email)).thenReturn(emptyList())
+        whenever(auth0UserRepository.getUsersByEmail(email)).thenReturn(emptyList())
 
         val result = userService.getUsersByEmail(email)
 
         assertNotNull(result)
         assertEquals(0, result.size)
-        verify(auth0ClientService).getUsersByEmail(email)
+        verify(auth0UserRepository).getUsersByEmail(email)
     }
 
     @Test
@@ -200,14 +206,14 @@ class UserServiceTest {
                     nickname = "john",
                 ),
             )
-        whenever(auth0ClientService.getUsers(query = "name:*John*")).thenReturn(auth0Users)
+        whenever(auth0UserRepository.getUsers("name:*John*", 0, 50, "v3")).thenReturn(auth0Users)
 
         val result = userService.searchUsers(name = "John")
 
         assertNotNull(result)
         assertEquals(1, result.size)
         assertEquals("John Doe", result[0].name)
-        verify(auth0ClientService).getUsers(query = "name:*John*")
+        verify(auth0UserRepository).getUsers("name:*John*", 0, 50, "v3")
     }
 
     @Test
@@ -224,7 +230,7 @@ class UserServiceTest {
                 ),
             )
         whenever(
-            auth0ClientService.getUsers(query = "email:\"test@example.com\""),
+            auth0UserRepository.getUsers("email:\"test@example.com\"", 0, 50, "v3"),
         ).thenReturn(auth0Users)
 
         val result = userService.searchUsers(email = "test@example.com")
@@ -232,7 +238,7 @@ class UserServiceTest {
         assertNotNull(result)
         assertEquals(1, result.size)
         assertEquals("test@example.com", result[0].email)
-        verify(auth0ClientService).getUsers(query = "email:\"test@example.com\"")
+        verify(auth0UserRepository).getUsers("email:\"test@example.com\"", 0, 50, "v3")
     }
 
     @Test
@@ -248,13 +254,15 @@ class UserServiceTest {
                     nickname = "verified",
                 ),
             )
-        whenever(auth0ClientService.getUsers(query = "email_verified:true")).thenReturn(auth0Users)
+        whenever(
+            auth0UserRepository.getUsers("email_verified:true", 0, 50, "v3"),
+        ).thenReturn(auth0Users)
 
         val result = userService.searchUsers(emailVerified = true)
 
         assertNotNull(result)
         assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(query = "email_verified:true")
+        verify(auth0UserRepository).getUsers("email_verified:true", 0, 50, "v3")
     }
 
     @Test
@@ -271,14 +279,14 @@ class UserServiceTest {
                 ),
             )
         whenever(
-            auth0ClientService.getUsers(query = "identities.connection:\"google-oauth2\""),
+            auth0UserRepository.getUsers("identities.connection:\"google-oauth2\"", 0, 50, "v3"),
         ).thenReturn(auth0Users)
 
         val result = userService.searchUsers(connection = "google-oauth2")
 
         assertNotNull(result)
         assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(query = "identities.connection:\"google-oauth2\"")
+        verify(auth0UserRepository).getUsers("identities.connection:\"google-oauth2\"", 0, 50, "v3")
     }
 
     @Test
@@ -294,18 +302,20 @@ class UserServiceTest {
                     nickname = "user",
                 ),
             )
-        whenever(auth0ClientService.getUsers(query = null)).thenReturn(auth0Users)
+        whenever(auth0UserRepository.getUsers(null, 0, 50, "v3")).thenReturn(auth0Users)
 
         val result = userService.searchUsers()
 
         assertNotNull(result)
         assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(query = null)
+        verify(auth0UserRepository).getUsers(null, 0, 50, "v3")
     }
 
     @Test
     fun `searchUsers should return empty list when no matches found`() {
-        whenever(auth0ClientService.getUsers(query = "name:*NonExistent*")).thenReturn(emptyList())
+        whenever(
+            auth0UserRepository.getUsers("name:*NonExistent*", 0, 50, "v3"),
+        ).thenReturn(emptyList())
 
         val result = userService.searchUsers(name = "NonExistent")
 
@@ -324,7 +334,7 @@ class UserServiceTest {
                 picture = "https://example.com/pic.jpg",
                 nickname = "testnick",
             )
-        whenever(auth0ClientService.getUserById("auth0|12345")).thenReturn(auth0User)
+        whenever(auth0UserRepository.getUserById("auth0|12345")).thenReturn(auth0User)
 
         val result = userService.getUserById("auth0|12345")
 
@@ -346,7 +356,7 @@ class UserServiceTest {
                 picture = null,
                 nickname = null,
             )
-        whenever(auth0ClientService.getUserById("auth0|12345")).thenReturn(auth0User)
+        whenever(auth0UserRepository.getUserById("auth0|12345")).thenReturn(auth0User)
 
         val result = userService.getUserById("auth0|12345")
 
@@ -368,7 +378,7 @@ class UserServiceTest {
                 picture = null,
                 nickname = "nick",
             )
-        whenever(auth0ClientService.getUserById("test-id")).thenReturn(auth0User)
+        whenever(auth0UserRepository.getUserById("test-id")).thenReturn(auth0User)
 
         val result = userService.getUserById("test-id")
 
@@ -389,13 +399,15 @@ class UserServiceTest {
                     nickname = "unverified",
                 ),
             )
-        whenever(auth0ClientService.getUsers(query = "email_verified:false")).thenReturn(auth0Users)
+        whenever(
+            auth0UserRepository.getUsers("email_verified:false", 0, 50, "v3"),
+        ).thenReturn(auth0Users)
 
         val result = userService.searchUsers(emailVerified = false)
 
         assertNotNull(result)
         assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(query = "email_verified:false")
+        verify(auth0UserRepository).getUsers("email_verified:false", 0, 50, "v3")
     }
 
     @Test
@@ -412,7 +424,7 @@ class UserServiceTest {
                 ),
             )
         whenever(
-            auth0ClientService.getUsers(query = "name:*John* AND email:\"john@example.com\""),
+            auth0UserRepository.getUsers("name:*John* AND email:\"john@example.com\"", 0, 50, "v3"),
         ).thenReturn(auth0Users)
 
         val result = userService.searchUsers(name = "John", email = "john@example.com")
@@ -420,7 +432,9 @@ class UserServiceTest {
         assertNotNull(result)
         assertEquals(1, result.size)
         assertEquals("John Doe", result[0].name)
-        verify(auth0ClientService).getUsers(query = "name:*John* AND email:\"john@example.com\"")
+        verify(
+            auth0UserRepository,
+        ).getUsers("name:*John* AND email:\"john@example.com\"", 0, 50, "v3")
     }
 
     @Test
@@ -437,14 +451,14 @@ class UserServiceTest {
                 ),
             )
         whenever(
-            auth0ClientService.getUsers(query = "name:*Verified* AND email_verified:true"),
+            auth0UserRepository.getUsers("name:*Verified* AND email_verified:true", 0, 50, "v3"),
         ).thenReturn(auth0Users)
 
         val result = userService.searchUsers(name = "Verified", emailVerified = true)
 
         assertNotNull(result)
         assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(query = "name:*Verified* AND email_verified:true")
+        verify(auth0UserRepository).getUsers("name:*Verified* AND email_verified:true", 0, 50, "v3")
     }
 
     @Test
@@ -461,10 +475,11 @@ class UserServiceTest {
                 ),
             )
         whenever(
-            auth0ClientService.getUsers(
-                query =
-                    "name:*Test* AND email:\"test@example.com\" AND email_verified:true " +
-                        "AND identities.connection:\"auth0\"",
+            auth0UserRepository.getUsers(
+                "name:*Test* AND email:\"test@example.com\" AND email_verified:true AND identities.connection:\"auth0\"",
+                0,
+                50,
+                "v3",
             ),
         ).thenReturn(auth0Users)
 
@@ -478,10 +493,11 @@ class UserServiceTest {
 
         assertNotNull(result)
         assertEquals(1, result.size)
-        verify(auth0ClientService).getUsers(
-            query =
-                "name:*Test* AND email:\"test@example.com\" " +
-                    "AND email_verified:true AND identities.connection:\"auth0\"",
+        verify(auth0UserRepository).getUsers(
+            "name:*Test* AND email:\"test@example.com\" AND email_verified:true AND identities.connection:\"auth0\"",
+            0,
+            50,
+            "v3",
         )
     }
 }

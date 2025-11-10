@@ -1,4 +1,4 @@
-package dtos
+package api.dtos.responses
 
 data class PermissionResponseDTO(
     val id: Long?,

@@ -1,4 +1,4 @@
-package dtos
+package api.dtos.requests
 
 data class RevokePermissionRequestDTO(
     val requesterId: String,

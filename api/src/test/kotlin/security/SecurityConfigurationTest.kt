@@ -1,6 +1,9 @@
 package security
 
 import api.config.RestTemplateConfig
+import api.security.AudienceValidator
+import api.security.JacksonConfig
+import api.security.OAuth2ResourceServerSecurityConfiguration
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test

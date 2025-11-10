@@ -1,10 +1,15 @@
 package integration
 
-import api.dtos.GetSnippetPermissionsRequestDTO
-import controllers.AuthorizationController
-import dtos.CheckPermissionRequestDTO
-import dtos.GrantPermissionRequestDTO
-import dtos.RevokePermissionRequestDTO
+import api.controllers.AuthorizationController
+import api.dtos.requests.GetSnippetPermissionsRequestDTO
+import api.dtos.requests.CheckPermissionRequestDTO
+import api.dtos.requests.GrantPermissionRequestDTO
+import api.dtos.requests.RevokePermissionRequestDTO
+import api.services.AuthorizationService
+import api.services.authorization.DefaultPermissionChecker
+import api.services.authorization.DefaultPermissionManager
+import api.services.authorization.DefaultPermissionQueryService
+import api.services.authorization.PermissionMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -12,7 +17,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import repositories.MockPermissionRepository
-import services.AuthorizationService
 
 class AuthorizationIntegrationTest {
 
@@ -23,7 +27,11 @@ class AuthorizationIntegrationTest {
     @BeforeEach
     fun setUp() {
         repository = MockPermissionRepository()
-        service = AuthorizationService(repository)
+        val permissionChecker = DefaultPermissionChecker(repository)
+        val permissionMapper = PermissionMapper()
+        val permissionManager = DefaultPermissionManager(repository, permissionMapper)
+        val permissionQueryService = DefaultPermissionQueryService(repository, permissionMapper)
+        service = AuthorizationService(permissionChecker, permissionManager, permissionQueryService)
         controller = AuthorizationController(service)
     }
 

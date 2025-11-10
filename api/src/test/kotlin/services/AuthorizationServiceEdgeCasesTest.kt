@@ -1,7 +1,12 @@
 package services
 
-import dtos.CheckPermissionRequestDTO
-import dtos.GrantPermissionRequestDTO
+import api.dtos.requests.CheckPermissionRequestDTO
+import api.dtos.requests.GrantPermissionRequestDTO
+import api.services.AuthorizationService
+import api.services.authorization.DefaultPermissionChecker
+import api.services.authorization.DefaultPermissionManager
+import api.services.authorization.DefaultPermissionQueryService
+import api.services.authorization.PermissionMapper
 import entities.Permission
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -19,7 +24,11 @@ class AuthorizationServiceEdgeCasesTest {
     @BeforeEach
     fun setUp() {
         repository = MockPermissionRepository()
-        service = AuthorizationService(repository)
+        val permissionChecker = DefaultPermissionChecker(repository)
+        val permissionMapper = PermissionMapper()
+        val permissionManager = DefaultPermissionManager(repository, permissionMapper)
+        val permissionQueryService = DefaultPermissionQueryService(repository, permissionMapper)
+        service = AuthorizationService(permissionChecker, permissionManager, permissionQueryService)
     }
 
     @Test

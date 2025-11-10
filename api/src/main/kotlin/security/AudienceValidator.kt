@@ -1,4 +1,4 @@
-package security
+package api.security
 
 import org.springframework.security.oauth2.core.OAuth2Error
 import org.springframework.security.oauth2.core.OAuth2TokenValidator
