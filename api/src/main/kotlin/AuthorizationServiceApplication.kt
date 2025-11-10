@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController
 @ComponentScan(
     basePackages = [
         "api", "controllers", "services",
-        "security", "dtos", "repositories", "entities",
+        "security", "dtos", "repositories",
+        "entities", "auth0", "config", "users",
     ],
 )
 @EnableJpaRepositories(basePackages = ["repositories"])
