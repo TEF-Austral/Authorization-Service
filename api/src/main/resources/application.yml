@@ -4,6 +4,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
@@ -24,11 +25,20 @@ auth0:
     client-id: ${AUTH0_MGMT_CLIENT_ID}
     client-secret: ${AUTH0_MGMT_CLIENT_SECRET}
 
+# Logging configuration with request ID
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [requestId=%X{requestId:-N/A}] - %msg%n"
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: WARN
+
 management:
   endpoints:
     web:
       exposure:
-        include: health
+        include: health,info,metrics
   endpoint:
     health:
       show-details: always
