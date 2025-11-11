@@ -4,7 +4,21 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: ghcr.io/tef-austral/authorization-api:dev
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+      SPRING_DATASOURCE_URL: jdbc:postgresql://authorization-db:5432/${POSTGRES_DB_AUTHORIZATION}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER_AUTHORIZATION}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD_AUTHORIZATION}
+
+      AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
+      AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
+      AUTH0_DOMAIN: ${AUTH0_DOMAIN}
+      AUTH0_MGMT_CLIENT_ID: ${AUTH0_MGMT_CLIENT_ID}
+      AUTH0_MGMT_CLIENT_SECRET: ${AUTH0_MGMT_CLIENT_SECRET}
+
+      NEW_RELIC_APP_NAME: "Authorization-Service-Prod"
+      NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
+      NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
     ports:
       - "8005:8080"
     env_file:
@@ -18,9 +32,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER_AUTHORIZATION}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_AUTHORIZATION}
+      POSTGRES_DB: ${POSTGRES_DB_AUTHORIZATION}
     volumes:
       - pgdata:/var/lib/postgresql/data
 
