@@ -25,15 +25,6 @@ auth0:
     client-id: ${AUTH0_MGMT_CLIENT_ID}
     client-secret: ${AUTH0_MGMT_CLIENT_SECRET}
 
-# Logging configuration with request ID
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [requestId=%X{requestId:-N/A}] - %msg%n"
-  level:
-    root: INFO
-    org.springframework: INFO
-    org.hibernate: WARN
-
 management:
   endpoints:
     web:

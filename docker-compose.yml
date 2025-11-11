@@ -9,14 +9,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://authorization-db:5432/${POSTGRES_DB_AUTHORIZATION}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER_AUTHORIZATION}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD_AUTHORIZATION}
-
       AUTH0_ISSUER_URI: ${AUTH0_ISSUER_URI}
       AUTH0_AUDIENCE: ${AUTH0_AUDIENCE}
       AUTH0_DOMAIN: ${AUTH0_DOMAIN}
       AUTH0_MGMT_CLIENT_ID: ${AUTH0_MGMT_CLIENT_ID}
       AUTH0_MGMT_CLIENT_SECRET: ${AUTH0_MGMT_CLIENT_SECRET}
-
-      NEW_RELIC_APP_NAME: "Authorization-Service-Prod"
+      NEW_RELIC_APP_NAME: "Authorization-Service-Local"
       NEW_RELIC_LICENSE_KEY: ${NEW_RELIC_LICENSE_KEY}
       NEW_RELIC_DISTRIBUTED_TRACING_ENABLED: "true"
     ports:
@@ -24,19 +22,17 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      - authorization-db
 
-  db:
-    container_name: authorization_db
+  authorization-db:
     image: postgres:16
-    ports:
-      - "5432:5432"
+    container_name: authorization_db_local
     environment:
       POSTGRES_USER: ${POSTGRES_USER_AUTHORIZATION}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_AUTHORIZATION}
       POSTGRES_DB: ${POSTGRES_DB_AUTHORIZATION}
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - authorization_data_local:/var/lib/postgresql/data
 
 volumes:
-  pgdata:
+  authorization_data_local:
