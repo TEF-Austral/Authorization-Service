@@ -1,6 +1,5 @@
 package security
 
-import api.config.RestTemplateConfig
 import api.security.AudienceValidator
 import api.security.JacksonConfig
 import api.security.OAuth2ResourceServerSecurityConfiguration
@@ -9,13 +8,6 @@ import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 
 class SecurityConfigurationTest {
-
-    @Test
-    fun `RestTemplateConfig should create RestTemplate bean`() {
-        val config = RestTemplateConfig()
-        val restTemplate = config.restTemplate()
-        assertNotNull(restTemplate)
-    }
 
     @Test
     fun `JacksonConfig should create ObjectMapper bean`() {
@@ -62,12 +54,6 @@ class SecurityConfigurationTest {
                 issuer = "https://issuer2.com/",
             )
         }
-    }
-
-    @Test
-    fun `RestTemplateConfig creates non-null instance`() {
-        val config = RestTemplateConfig()
-        assertNotNull(config)
     }
 
     @Test
